@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Board — TaskFlow</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <div class="main-area">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="content">
+      <div class="board-wrapper">
+        <div class="board">
+          <div class="board-column">
+            <div class="board-column-header">
+              <div class="board-column-title"><span class="status-dot dot-todo"></span> To Do</div>
+              <span class="column-count" id="count-todo">0</span>
+            </div>
+            <div class="column-cards" id="col-todo"></div>
+            <button class="add-task-btn" data-status="To Do">+ Add Task</button>
+          </div>
+
+          <div class="board-column">
+            <div class="board-column-header">
+              <div class="board-column-title"><span class="status-dot dot-inprogress"></span> In Progress</div>
+              <span class="column-count" id="count-inprogress">0</span>
+            </div>
+            <div class="column-cards" id="col-inprogress"></div>
+            <button class="add-task-btn" data-status="In Progress">+ Add Task</button>
+          </div>
+
+          <div class="board-column">
+            <div class="board-column-header">
+              <div class="board-column-title"><span class="status-dot dot-review"></span> Review</div>
+              <span class="column-count" id="count-review">0</span>
+            </div>
+            <div class="column-cards" id="col-review"></div>
+            <button class="add-task-btn" data-status="Review">+ Add Task</button>
+          </div>
+
+          <div class="board-column">
+            <div class="board-column-header">
+              <div class="board-column-title"><span class="status-dot dot-done"></span> Done</div>
+              <span class="column-count" id="count-done">0</span>
+            </div>
+            <div class="column-cards" id="col-done"></div>
+            <button class="add-task-btn" data-status="Done">+ Add Task</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Create Task Modal -->
+<div class="modal-overlay" id="taskModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Create Task</h3>
+      <button class="modal-close" id="taskModalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="taskForm">
+        <div class="field">
+          <label for="taskTitle">Task title</label>
+          <input type="text" id="taskTitle" placeholder="e.g. Design Homepage" required />
+        </div>
+        <div class="field">
+          <label for="taskDescription">Description</label>
+          <textarea id="taskDescription" placeholder="Add more detail about this task"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="taskAssignee">Assign to</label>
+            <select id="taskAssignee">
+              <option value="">Unassigned</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="taskDueDate">Due date</label>
+            <input type="date" id="taskDueDate" />
+          </div>
+          <div class="field">
+            <label for="taskStatus">Status</label>
+            <select id="taskStatus">
+              <option value="To Do">To Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Review">Review</option>
+              <option value="Done">Done</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="taskCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="taskSaveBtn">Create Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- Task Detail Modal -->
+<div class="modal-overlay" id="detailModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="detailTitle">Task Title</h3>
+      <button class="modal-close" id="detailModalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="detail-desc" id="detailDescription"></p>
+
+      <div class="detail-meta-grid">
+        <div class="detail-meta-item">
+          <div class="label">Assigned To</div>
+          <div class="value" id="detailAssignee">—</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="label">Priority</div>
+          <div class="value" id="detailPriority">—</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="label">Status</div>
+          <div class="value">
+            <select class="status-select" id="detailStatusSelect">
+              <option value="To Do">To Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Review">Review</option>
+              <option value="Done">Done</option>
+            </select>
+          </div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="label">Due Date</div>
+          <div class="value" id="detailDueDate">—</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-danger btn-sm" id="detailDeleteBtn">Delete Task</button>
+      </div>
+
+      <div class="comments-section">
+        <h3 style="font-size:15px; margin-bottom:14px;">Comments</h3>
+        <div id="commentsList"></div>
+        <div class="comment-input-row">
+          <input type="text" id="newCommentInput" placeholder="Write a comment..." />
+          <button class="btn btn-primary btn-sm" id="addCommentBtn">Post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/project.js"></script>
+</body>
+</html>

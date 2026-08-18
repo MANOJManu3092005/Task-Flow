@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projects — TaskFlow</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <div class="main-area">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="content">
+      <div class="project-grid" id="projectGrid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- Create / Edit Project Modal -->
+<div class="modal-overlay" id="projectModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="projectModalTitle">Create Project</h3>
+      <button class="modal-close" id="projectModalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="projectForm">
+        <input type="hidden" id="projectId" />
+        <div class="field">
+          <label for="projectName">Project name</label>
+          <input type="text" id="projectName" placeholder="e.g. Website Redesign" required />
+        </div>
+        <div class="field">
+          <label for="projectDescription">Description</label>
+          <textarea id="projectDescription" placeholder="What is this project about?"></textarea>
+        </div>
+        <div class="field">
+          <label for="projectDueDate">Due date</label>
+          <input type="date" id="projectDueDate" />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="projectCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="projectSaveBtn">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/projects.js"></script>
+</body>
+</html>
